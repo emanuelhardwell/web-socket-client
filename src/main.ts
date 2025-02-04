@@ -4,7 +4,7 @@ import "./style.css";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1>Web Sockets - Client!</h1>
-    <p>Offline.</p>
+    <p id="server-status">Offline.</p>
   </div>
 `;
 
