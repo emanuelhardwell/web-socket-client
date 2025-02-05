@@ -26,4 +26,21 @@ export const addEventListeners = (socket: Socket) => {
 
     clientsList.innerHTML = clients;
   });
+
+  const messageForm = document.querySelector<HTMLFormElement>("#message-form");
+  const messageInput =
+    document.querySelector<HTMLInputElement>("#message-input")!;
+
+  messageForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (messageInput?.value.trim().length <= 0) {
+      return;
+    }
+
+    socket.emit("message_client", {
+      id: "client",
+      message: messageInput?.value,
+    });
+  });
 };
