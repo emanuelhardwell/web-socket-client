@@ -34,7 +34,7 @@ export const addEventListeners = (socket: Socket) => {
   messageForm?.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (messageInput?.value.trim().length <= 0) {
+    if (messageInput?.value.trim().length <= 1) {
       return;
     }
 
@@ -42,5 +42,18 @@ export const addEventListeners = (socket: Socket) => {
       id: "client",
       message: messageInput?.value,
     });
+    messageInput.value = "";
   });
+
+  socket.on(
+    "message_server",
+    (payload: { fullname: string; message: string }) => {
+      console.log(payload);
+      const messagesList = document.querySelector("#messages_list")!;
+
+      const li = document.createElement("li");
+      li.textContent = `${payload.fullname}: ${payload.message}`;
+      messagesList.appendChild(li);
+    }
+  );
 };
