@@ -1,7 +1,9 @@
 import { Manager, Socket } from "socket.io-client";
 
-export const connectToServer = (): void => {
-  const manager = new Manager("http://localhost:3000/socket.io/socket.io.js");
+export const connectToServer = (jwt: string): void => {
+  const manager = new Manager("http://localhost:3000/socket.io/socket.io.js", {
+    extraHeaders: { authentication: jwt },
+  });
   const socket = manager.socket("/");
   addEventListeners(socket);
 };
@@ -39,7 +41,7 @@ export const addEventListeners = (socket: Socket) => {
     }
 
     socket.emit("message_client", {
-      id: "client",
+      fullname: "client",
       message: messageInput?.value,
     });
     messageInput.value = "";
