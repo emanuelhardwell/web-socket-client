@@ -1,14 +1,18 @@
 import { Manager, Socket } from "socket.io-client";
 
+let socket: Socket;
+
 export const connectToServer = (jwt: string): void => {
   const manager = new Manager("http://localhost:3000/socket.io/socket.io.js", {
     extraHeaders: { authentication: jwt },
   });
-  const socket = manager.socket("/");
-  addEventListeners(socket);
+
+  socket?.removeAllListeners();
+  socket = manager.socket("/");
+  addEventListeners();
 };
 
-export const addEventListeners = (socket: Socket) => {
+export const addEventListeners = () => {
   const serverStatus = document.querySelector("#server-status")!;
   const clientsList = document.querySelector("#clients_list")!;
 
