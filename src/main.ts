@@ -1,24 +1,36 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { connectToServer } from "./socket-client";
+import "./style.css";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+    <h1>Web Sockets - Client!</h1>
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+    <br />
+    <input type="text" id="jwt-input" placeholder="Enter your JWT..." />
+    <button id="send-jwt-button">Send</button>
+    
+    <p id="server-status">Offline.</p>
+    <ul id="clients_list">
+    </ul>
+
+    <br />
+    <form id="message-form">
+    <input type="text" id="message-input" placeholder="Enter your message..." />
+    </form>
+
+    <br />
+    <ul id="messages_list"/>
+  </div>
+`;
+
+const jwtInput: HTMLInputElement = document.querySelector("#jwt-input")!;
+const sendJwtButton: HTMLButtonElement =
+  document.querySelector("#send-jwt-button")!;
+
+sendJwtButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (jwtInput.value.trim().length <= 1)
+    return alert("Please enter the JWT token");
+
+  connectToServer(jwtInput.value);
+});
